@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Matching Game</title>
+    <style>{{CSS_CONTENT}}</style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Matching Game</h1>
+        <p id="description">Nối các cặp khớp nhau</p>
+        <div id="game-area">
+            <div class="column" id="left-column"></div>
+            <div class="column" id="right-column"></div>
+        </div>
+        <div id="score">Điểm: <span id="score-value">0</span></div>
+        <button id="check-btn">Kiểm tra</button>
+        <button id="reset-btn">Chơi lại</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        const gameData = {{GAME_DATA}};
+        {{JS_CONTENT}}
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Word Search</title>
+    <style>{{CSS_CONTENT}}</style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Word Search</h1>
+        <p id="description">Tìm các từ trong bảng chữ cái</p>
+        <div class="game-area">
+            <div class="grid" id="grid"></div>
+            <div class="word-list">
+                <h3>Danh sách từ:</h3>
+                <ul id="words-list"></ul>
+            </div>
+        </div>
+        <button id="reset-btn">Chơi lại</button>
+        <div id="score">Đã tìm: <span id="score-value">0</span>/<span id="total">0</span></div>
+    </div>
+    <script>
+        const gameData = {{GAME_DATA}};
+        {{JS_CONTENT}}
+    </script>
+</body>
+</html>

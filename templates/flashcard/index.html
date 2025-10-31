@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Flash Cards</title>
+    <style>{{CSS_CONTENT}}</style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Flash Cards</h1>
+        <p id="description">Nhấn vào thẻ để lật</p>
+        <div class="card-container">
+            <div class="card" id="card">
+                <div class="card-front" id="card-front"></div>
+                <div class="card-back" id="card-back"></div>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="prev-btn">← Trước</button>
+            <span id="counter">1 / 10</span>
+            <button id="next-btn">Sau →</button>
+        </div>
+        <button id="shuffle-btn">Xáo thẻ</button>
+    </div>
+    <script>
+        const gameData = {{GAME_DATA}};
+        {{JS_CONTENT}}
+    </script>
+</body>
+</html>

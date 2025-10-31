@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="game-title">Drag & Drop</title>
+    <style>{{CSS_CONTENT}}</style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Drag & Drop Game</h1>
+        <p id="description">Kéo và thả đáp án vào đúng vị trí</p>
+        <div id="questions-container"></div>
+        <button id="check-btn">Kiểm tra</button>
+        <button id="reset-btn">Làm lại</button>
+        <div id="score">Điểm: <span id="score-value">0</span>/<span id="total">0</span></div>
+    </div>
+    <script>
+        const gameData = {{GAME_DATA}};
+        {{JS_CONTENT}}
+    </script>
+</body>
+</html>

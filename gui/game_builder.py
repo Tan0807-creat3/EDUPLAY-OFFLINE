@@ -130,11 +130,18 @@ class GameBuilder(QWidget):
         type_label = QLabel("Loại trò chơi:")
         type_label.setStyleSheet("font-weight: bold;")
         self.type_combo = QComboBox()
-        self.type_combo.addItems(['Trắc nghiệm'])
+        self.type_combo.addItems(['Trắc nghiệm', 'Nối cặp', 'Thẻ ghi nhớ', 'Điền từ', 'Kéo thả', 'Tìm từ'])
+        self.type_combo.currentIndexChanged.connect(self.on_type_changed)
         type_layout.addWidget(type_label)
         type_layout.addWidget(self.type_combo)
         type_layout.addStretch()
         form_layout.addLayout(type_layout)
+        
+        self.type_hint = QLabel()
+        self.type_hint.setWordWrap(True)
+        self.type_hint.setStyleSheet("color: #666; font-size: 12px; padding: 10px; background: #f8f9fa; border-radius: 5px;")
+        form_layout.addWidget(self.type_hint)
+        self.update_type_hint()
         
         main_layout.addLayout(form_layout)
         
@@ -259,6 +266,21 @@ class GameBuilder(QWidget):
             qw.question_number = i + 1
             qw.findChild(QLabel).setText(f"Câu hỏi {i + 1}")
     
+    def on_type_changed(self):
+        self.update_type_hint()
+    
+    def update_type_hint(self):
+        type_index = self.type_combo.currentIndex()
+        hints = {
+            0: "Trắc nghiệm: Mỗi câu hỏi có 4 đáp án, chọn 1 đáp án đúng",
+            1: "Nối cặp: Câu hỏi là thuật ngữ, Đáp án A là định nghĩa (chỉ cần điền A)",
+            2: "Thẻ ghi nhớ: Câu hỏi là mặt trước, Đáp án A là mặt sau (chỉ cần điền A)",
+            3: "Điền từ: Câu hỏi có ____ làm chỗ trống, đáp án đúng là từ cần điền",
+            4: "Kéo thả: Tương tự trắc nghiệm, sẽ được hiển thị dạng kéo thả",
+            5: "Tìm từ: Câu hỏi là từ cần tìm, đáp án A là gợi ý (không bắt buộc)"
+        }
+        self.type_hint.setText(f"💡 {hints.get(type_index, '')}")
+    
     def get_game_data(self):
         questions = []
         for qw in self.question_widgets:
@@ -266,10 +288,19 @@ class GameBuilder(QWidget):
             if q_data['question']:
                 questions.append(q_data)
         
+        type_map = {
+            0: 'quiz',
+            1: 'matching',
+            2: 'flashcard',
+            3: 'fillinblank',
+            4: 'dragdrop',
+            5: 'wordsearch'
+        }
+        
         return {
             'title': self.title_input.text().strip(),
             'description': self.desc_input.toPlainText().strip(),
-            'game_type': 'quiz',
+            'game_type': type_map.get(self.type_combo.currentIndex(), 'quiz'),
             'questions': questions,
             'created': datetime.now().isoformat()
         }
@@ -303,6 +334,17 @@ class GameBuilder(QWidget):
     def load_game(self, game_data):
         self.title_input.setText(game_data.get('title', ''))
         self.desc_input.setPlainText(game_data.get('description', ''))
+        
+        game_type = game_data.get('game_type', 'quiz')
+        type_map_reverse = {
+            'quiz': 0,
+            'matching': 1,
+            'flashcard': 2,
+            'fillinblank': 3,
+            'dragdrop': 4,
+            'wordsearch': 5
+        }
+        self.type_combo.setCurrentIndex(type_map_reverse.get(game_type, 0))
         
         for qw in self.question_widgets:
             qw.deleteLater()

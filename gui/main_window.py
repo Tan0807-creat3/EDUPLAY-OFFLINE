@@ -10,10 +10,13 @@ from gui.sidebar_widget import SidebarWidget
 from gui.game_builder import GameBuilder
 from gui.game_player import GamePlayer
 from gui.settings_dialog import SettingsDialog
+from gui.chat_ai_dialog import ChatAIDialog
+from gui.docx_import_dialog import DocxImportDialog
 
 from core.file_manager import FileManager
 from core.exporter import GameExporter
 from core.ai_helper import AIHelper
+from core.docx_importer import DocxImporter
 from core.utils import get_settings_path, load_json
 
 class MainWindow(QMainWindow):
@@ -23,6 +26,7 @@ class MainWindow(QMainWindow):
         self.file_manager = FileManager()
         self.exporter = GameExporter()
         self.ai_helper = AIHelper()
+        self.docx_importer = DocxImporter()
         self.current_game_data = None
         self.current_game_file = None
         
@@ -45,6 +49,8 @@ class MainWindow(QMainWindow):
         self.sidebar.new_game_clicked.connect(self.show_new_game)
         self.sidebar.open_game_clicked.connect(self.show_open_game)
         self.sidebar.play_game_clicked.connect(self.show_play_game)
+        self.sidebar.chat_ai_clicked.connect(self.show_chat_ai)
+        self.sidebar.import_docx_clicked.connect(self.show_import_docx)
         self.sidebar.settings_clicked.connect(self.show_settings)
         self.sidebar.help_clicked.connect(self.show_help)
         main_layout.addWidget(self.sidebar)
@@ -350,6 +356,32 @@ class MainWindow(QMainWindow):
                 "Lỗi",
                 f"Không thể tạo câu hỏi:\n{result.get('error', 'Lỗi không xác định')}"
             )
+    
+    def show_chat_ai(self):
+        dialog = ChatAIDialog(self.ai_helper, self)
+        if dialog.exec():
+            game_data = dialog.get_generated_game()
+            if game_data:
+                self.game_builder.load_game(game_data)
+                self.content_stack.setCurrentWidget(self.game_builder)
+                QMessageBox.information(
+                    self,
+                    "Thành công",
+                    "Đã tải game từ AI vào editor!"
+                )
+    
+    def show_import_docx(self):
+        dialog = DocxImportDialog(self.docx_importer, self)
+        if dialog.exec():
+            game_data = dialog.get_imported_game()
+            if game_data:
+                self.game_builder.load_game(game_data)
+                self.content_stack.setCurrentWidget(self.game_builder)
+                QMessageBox.information(
+                    self,
+                    "Thành công",
+                    f"Đã nhập {len(game_data['questions'])} câu hỏi từ file Word!"
+                )
     
     def load_app_settings(self):
         settings = load_json(get_settings_path())
