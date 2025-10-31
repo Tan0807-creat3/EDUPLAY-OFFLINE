@@ -125,7 +125,7 @@ python main.py
 
 Để sử dụng tính năng AI sinh câu hỏi:
 
-1. Đăng ký API Key miễn phí tại: https://makersuite.google.com/app/apikey
+1. Đăng ký API Key miễn phí tại: [https://makersuite.google.com/app/apikey](https://aistudio.google.com/app/api-keys)
 2. Vào "Cài đặt" trong ứng dụng
 3. Nhập Gemini API Key
 4. Lưu cài đặt
@@ -205,7 +205,7 @@ Câu hỏi của bạn?
 
 ## Giấy phép
 
-Phần mềm mã nguồn mở (*LICENSE MIT*), miễn phí 100%, dành cho giáo dục.
+Phần mềm mã nguồn mở (***LICENSE MIT***), miễn phí 100%, dành cho giáo dục.
 
 ## Đóng góp
 
@@ -215,4 +215,4 @@ Mọi đóng góp đều được hoan nghênh! Hãy tạo issue hoặc pull req
 
 Nếu gặp vấn đề, vui lòng tạo issue trên GitHub hoặc liên hệ qua email.
 
-## Email: tanntfx37798@funix.edu.vn
+#### Email: tanntfx37798@funix.edu.vn
