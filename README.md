@@ -205,7 +205,7 @@ Câu hỏi của bạn?
 
 ## Giấy phép
 
-Phần mềm mã nguồn mở, miễn phí 100%, dành cho giáo dục.
+Phần mềm mã nguồn mở (*LICENSE MIT*), miễn phí 100%, dành cho giáo dục.
 
 ## Đóng góp
 
