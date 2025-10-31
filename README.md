@@ -1,215 +1,126 @@
-# 🧭 **TỔNG THIẾT KẾ DỰ ÁN EDUPLAY OFFLINE**
+# EduPlay Offline - Phần mềm tạo trò chơi học tập
 
-> 🧩 Mục tiêu: Phần mềm **phi lợi nhuận, chạy offline**, giúp **giáo viên dễ dàng tạo và chơi các trò chơi học tập** mà **không cần kỹ năng lập trình**, có hỗ trợ **AI miễn phí (Gemini hoặc mô hình local)**.
+Phần mềm **miễn phí, chạy offline** giúp giáo viên dễ dàng tạo và chơi các trò chơi học tập mà không cần kỹ năng lập trình, có hỗ trợ AI miễn phí (Gemini).
 
----
+## Tính năng chính
 
-## 🏗️ **1️⃣ CẤU TRÚC DỰ ÁN TỔNG THỂ**
+- **Giao diện thân thiện**: Dễ sử dụng, không cần kiến thức lập trình
+- **Tạo trò chơi trắc nghiệm**: Thêm câu hỏi, đáp án một cách dễ dàng
+- **Hỗ trợ AI**: Tự động sinh câu hỏi theo chủ đề bằng Gemini AI
+- **Xuất HTML**: Tạo file HTML độc lập để chia sẻ và chơi offline
+- **Chơi ngay trong app**: Xem trước và chơi game không cần trình duyệt
+- **Lưu trữ dữ liệu**: Quản lý các trò chơi đã tạo
+
+## Cài đặt
+
+### Yêu cầu hệ thống
+
+**Chung:**
+- Python 3.11+
+- Desktop environment (Windows 10/11, Ubuntu 20.04+, macOS 11+)
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt-get install python3-dev python3-pip
+sudo apt-get install libgl1-mesa-glx libxcb-xinerama0
+```
+
+**macOS:**
+```bash
+brew install python@3.11
+```
+
+**Windows:**
+- Tải Python từ python.org
+- Đảm bảo "Add Python to PATH" được chọn khi cài đặt
+
+### Cài đặt dependencies
+
+**Sử dụng pip:**
+```bash
+pip install PySide6 google-generativeai
+```
+
+**Hoặc sử dụng uv (nhanh hơn):**
+```bash
+uv pip install PySide6 google-generativeai
+```
+
+### Lưu ý môi trường đặc biệt
+
+**NixOS:**
+Cần cài đặt thêm OpenGL libraries:
+```bash
+nix-env -iA nixpkgs.libglvnd nixpkgs.mesa
+export LD_LIBRARY_PATH="/run/opengl-driver/lib:$LD_LIBRARY_PATH"
+```
+
+**Replit/Cloud environments:**
+PySide6 cần desktop environment để hiển thị GUI. Trên môi trường cloud không có X11 server, bạn vẫn có thể:
+- Sử dụng core modules để tạo/xuất game (xem test_demo.py)
+- Chạy trên máy local để sử dụng đầy đủ GUI
+
+## Sử dụng
+
+### Chạy ứng dụng
+
+```bash
+python main.py
+```
+
+### Hướng dẫn nhanh
+
+1. **Tạo trò chơi mới**: Nhấn "Tạo trò chơi mới" từ menu bên trái
+2. **Nhập thông tin**: Điền tiêu đề, mô tả và các câu hỏi
+3. **Sử dụng AI (tùy chọn)**: 
+   - Vào "Cài đặt" để nhập Gemini API Key
+   - Nhập chủ đề và nhấn "Sinh câu hỏi bằng AI"
+4. **Lưu trò chơi**: Nhấn "Lưu trò chơi" để lưu vào data/games/
+5. **Xuất HTML**: Nhấn "Xuất HTML" để tạo file độc lập
+6. **Chơi**: Chọn "Chơi trò chơi" để chơi ngay
+
+## Cấu hình AI
+
+Để sử dụng tính năng AI sinh câu hỏi:
+
+1. Đăng ký API Key miễn phí tại: https://makersuite.google.com/app/apikey
+2. Vào "Cài đặt" trong ứng dụng
+3. Nhập Gemini API Key
+4. Lưu cài đặt
+
+## Cấu trúc dự án
 
 ```
 EduPlay_Offline/
-│
-├── main.py
-│
-├── gui/                             # Giao diện chính (PySide6)
-│   ├── main_window.py               # Cửa sổ chính, sidebar, hiển thị nội dung
-│   ├── sidebar_widget.py            # Menu bên trái
-│   ├── toolbar_widget.py            # Thanh công cụ trên cùng (tùy chọn)
-│   ├── game_builder.py              # Trình tạo trò chơi (UI nhập câu hỏi)
-│   ├── game_player.py               # Nhúng QWebEngineView để chơi game HTML
-│   ├── settings_dialog.py           # Cấu hình (AI, thư mục, theme...)
-│   ├── assets/
-│   │   ├── icons/                   # Icon (SVG, PNG)
-│   │   └── sounds/                  # Âm thanh giao diện
-│   └── __init__.py
-│
-├── core/                            # Xử lý logic, dữ liệu
-│   ├── file_manager.py              # Lưu/đọc JSON hoặc SQLite
-│   ├── exporter.py                  # Xuất dữ liệu sang HTML (game)
-│   ├── ai_helper.py                 # Kết nối AI miễn phí (Gemini / local)
-│   ├── template_manager.py          # Quản lý các mẫu game HTML
-│   └── utils.py                     # Hàm phụ (đường dẫn, xử lý văn bản, ...)
-│
-├── data/                            # Dữ liệu người dùng
-│   ├── games/                       # Các trò chơi do giáo viên tạo
-│   ├── settings.json                # Cấu hình người dùng
-│   └── db/                          # CSDL (tùy chọn sau này)
-│
-├── templates/                       # Mẫu game HTML/JS/CSS
-│   ├── quiz/
-│   │   ├── index.html
-│   │   ├── script.js
-│   │   └── style.css
-│   ├── matching/
-│   │   ├── index.html
-│   │   ├── script.js
-│   │   └── style.css
-│   ├── dragdrop/
-│   └── wordsearch/
-│
-├── ai_models/                       # Mô hình local nếu dùng offline
-│   └── README.md
-│
-├── docs/                            # Tài liệu phát triển & hướng dẫn
-│   ├── features.md
-│   ├── developer_guide.md
-│   ├── teacher_manual.md
-│   └── changelog.md
-│
-├── requirements.txt                 # Thư viện Python
-└── README.md
+├── main.py                 # File chính để chạy app
+├── gui/                    # Giao diện PySide6
+│   ├── main_window.py      # Cửa sổ chính
+│   ├── sidebar_widget.py   # Menu bên trái
+│   ├── game_builder.py     # Trình tạo trò chơi
+│   ├── game_player.py      # Chơi game (QWebEngineView)
+│   └── settings_dialog.py  # Cài đặt
+├── core/                   # Logic xử lý
+│   ├── file_manager.py     # Quản lý file JSON
+│   ├── exporter.py         # Xuất game ra HTML
+│   ├── ai_helper.py        # Tích hợp Gemini AI
+│   ├── template_manager.py # Quản lý template
+│   └── utils.py            # Hàm tiện ích
+├── templates/              # Mẫu game HTML/CSS/JS
+│   └── quiz/               # Template trắc nghiệm
+├── data/                   # Dữ liệu người dùng
+│   ├── games/              # Game đã tạo
+│   └── settings.json       # Cấu hình
+└── docs/                   # Tài liệu
 ```
 
----
+## Giấy phép
 
-## ⚙️ **2️⃣ TỔNG HỢP TÍNH NĂNG CỦA TOÀN BỘ PHẦN MỀM**
+Phần mềm mã nguồn mở, miễn phí 100%, dành cho giáo dục.
 
-### 🧩 **A. Giao diện chính (PySide6)**
+## Đóng góp
 
-* Sidebar (menu bên trái)
+Mọi đóng góp đều được hoan nghênh! Hãy tạo issue hoặc pull request.
 
-  * 🧩 Tạo trò chơi mới
-  * 📂 Mở trò chơi đã lưu
-  * 🎮 Chơi trò chơi
-  * ⚙️ Cài đặt
-  * ❓ Hướng dẫn sử dụng
-* Toolbar (trên cùng)
+## Hỗ trợ
 
-  * Biểu tượng EduPlay
-  * Nút lưu, xuất, chạy thử nhanh
-
----
-
-### 🎨 **B. Trình tạo trò chơi (Game Builder)**
-
-* Giao diện dạng form, gồm:
-
-  * Tiêu đề trò chơi
-  * Mô tả ngắn
-  * Chọn loại trò chơi (trắc nghiệm, nối, kéo thả, điền từ, v.v.)
-  * Khu vực nhập câu hỏi / đáp án (có thể thêm hàng loạt)
-* Nút:
-
-  * 💾 Lưu trò chơi (ra file `.json`)
-  * ⚙️ Xuất ra HTML (tự động ghép template)
-  * 🤖 Dùng AI sinh câu hỏi
-
----
-
-### 🧠 **C. AI HỖ TRỢ (Gemini / local free API)**
-
-* Gợi ý câu hỏi theo chủ đề (ví dụ: “Toán lớp 3”, “Danh nhân VN”)
-* Chuyển đổi câu hỏi trắc nghiệm sang định dạng chuẩn JSON
-* Có thể chạy offline bằng mô hình nhẹ:
-
-  * **Ollama + Gemma**, hoặc
-  * **LLaMA 3 mini**, hoặc
-  * Gọi API Gemini free (nếu có Internet).
-* `core/ai_helper.py` sẽ có chức năng:
-
-  ```python
-  def generate_questions(topic: str, count: int = 5) -> list:
-      ...
-  ```
-
----
-
-### 🕹️ **D. Phần chơi trò chơi (Game Player)**
-
-* Dùng **QWebEngineView** để hiển thị trò chơi HTML (offline)
-* Hỗ trợ:
-
-  * Trắc nghiệm (quiz)
-  * Nối cặp (matching)
-  * Kéo – thả (dragdrop)
-  * Ô chữ / từ khóa (wordsearch)
-* Mỗi template HTML sẽ nhận file `.json` dữ liệu game được export ra.
-
----
-
-### 🗂️ **E. Quản lý tệp**
-
-* Lưu & mở file `.json` chứa dữ liệu trò chơi.
-* Xuất ra `.html` để chơi trên trình duyệt ngoài.
-* Tạo folder `data/games/` tự động.
-
----
-
-### 🎛️ **F. Cài đặt (Settings)**
-
-* Chọn theme (sáng / tối)
-* Đường dẫn lưu file mặc định
-* Cấu hình AI (chọn Gemini hoặc local)
-* Lưu ở `data/settings.json`
-
----
-
-### 📚 **G. Hỗ trợ & hướng dẫn**
-
-* Mục “Trợ giúp” trong menu chính
-* File `teacher_manual.md`: hướng dẫn tạo trò chơi nhanh
-* File `developer_guide.md`: hướng dẫn lập trình & mở rộng
-
----
-
-## 💾 **3️⃣ CÔNG CỤ VÀ THƯ VIỆN SỬ DỤNG**
-
-| Loại               | Công cụ / Thư viện                     | Ghi chú                   |
-| ------------------ | -------------------------------------- | ------------------------- |
-| GUI                | PySide6                                | Giao diện chính           |
-| Trình duyệt nội bộ | PySide6.QtWebEngine                    | Để chạy HTML game         |
-| AI                 | Gemini API Free / Local model (Ollama) | Gợi ý câu hỏi             |
-| Dữ liệu            | JSON / SQLite                          | Lưu trữ trò chơi          |
-| Âm thanh           | pyttsx3 (Text to Speech)               | Đọc câu hỏi               |
-| Xuất file          | HTML + JS                              | Game template offline     |
-| Gói exe            | PyInstaller                            | Xuất ra .exe chạy offline |
-| Icon               | Lucide / Remix Icon                    | Dễ nhìn, miễn phí         |
-| CSS/JS             | Vanilla (không framework)              | Nhẹ, dễ tùy chỉnh         |
-
----
-
-## 🧩 **4️⃣ CÁC TRÒ CHƠI DỰ KIẾN TÍCH HỢP**
-
-| Tên                | Loại           | Mô tả                |
-| ------------------ | -------------- | -------------------- |
-| **Quiz Master**    | Trắc nghiệm    | 4 lựa chọn, đếm điểm |
-| **Matching Pairs** | Nối cặp        | Ghép từ – nghĩa      |
-| **Drag & Drop**    | Kéo thả        | Kéo đúng chỗ         |
-| **Word Search**    | Ô chữ          | Tìm từ trong lưới    |
-| **Flash Cards**    | Lật thẻ        | Học từ vựng nhanh    |
-| **Quick Test**     | Kiểm tra nhanh | 5 câu / 1 phút       |
-
----
-
-## 🔧 **5️⃣ KẾ HOẠCH PHÁT TRIỂN THEO GIAI ĐOẠN**
-
-| Giai đoạn | Nội dung                        | Kết quả               |
-| --------- | ------------------------------- | --------------------- |
-| 1️⃣       | Cấu trúc & setup môi trường     | Chạy được app trống   |
-| 2️⃣       | Giao diện chính + sidebar       | Khung cơ bản          |
-| 3️⃣       | Tích hợp QWebEngineView         | Hiển thị game HTML    |
-| 4️⃣       | Trình tạo trò chơi (form)       | Nhập và lưu câu hỏi   |
-| 5️⃣       | AI hỗ trợ câu hỏi               | Sinh nội dung tự động |
-| 6️⃣       | Xây dựng 3 template game cơ bản | Có thể xuất HTML      |
-| 7️⃣       | Cài đặt, lưu theme & AI         | Giao diện hoàn thiện  |
-| 8️⃣       | Đóng gói exe & test offline     | Ứng dụng hoàn chỉnh   |
-
----
-
-## 🎯 **6️⃣ MỤC TIÊU CUỐI**
-
-* ✅ Chạy hoàn toàn offline trên Windows / Linux / macOS
-* ✅ Miễn phí 100%, mã nguồn mở
-* ✅ Dễ dùng cho giáo viên không biết lập trình
-* ✅ Có thể mở rộng (thêm trò chơi / giao diện / ngôn ngữ)
-
----
-
-## 📘 **7️⃣ TÀI LIỆU SẼ CÓ**
-
-* `docs/features.md` — mô tả tính năng chi tiết
-* `docs/teacher_manual.md` — hướng dẫn giáo viên
-* `docs/developer_guide.md` — hướng dẫn lập trình viên mở rộng
-* `docs/changelog.md` — lịch sử cập nhật
-
----
+Nếu gặp vấn đề, vui lòng tạo issue trên GitHub hoặc liên hệ qua email.
