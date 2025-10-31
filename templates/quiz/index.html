@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - EduPlay</title>
+    <style>
+{{CSS_CONTENT}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1 id="gameTitle">Quiz Master</h1>
+            <p id="gameDescription"></p>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <div class="score-board">
+                <span>Câu hỏi: <span id="currentQuestion">1</span>/<span id="totalQuestions">0</span></span>
+                <span>Điểm: <span id="score">0</span></span>
+            </div>
+        </div>
+
+        <div class="quiz-content" id="quizContent">
+            <div class="question-container">
+                <h2 id="questionText"></h2>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <button id="prevBtn" class="btn btn-secondary" onclick="previousQuestion()">Trước</button>
+            <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Tiếp</button>
+            <button id="submitBtn" class="btn btn-success" onclick="submitQuiz()" style="display:none;">Nộp bài</button>
+        </div>
+
+        <div class="result-container" id="resultContainer" style="display:none;">
+            <h2>Kết quả</h2>
+            <div class="result-score">
+                <span id="finalScore"></span>
+            </div>
+            <div id="resultDetails"></div>
+            <button class="btn btn-primary" onclick="restartQuiz()">Chơi lại</button>
+        </div>
+    </div>
+
+    <script>
+        const GAME_DATA = {{GAME_DATA}};
+    </script>
+    <script>
+{{JS_CONTENT}}
+    </script>
+</body>
+</html>
