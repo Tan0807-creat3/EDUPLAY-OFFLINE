@@ -46,7 +46,7 @@ EduPlay là phần mềm miễn phí giúp giáo viên tạo trò chơi học t�
 
 #### Cấu hình API Key lần đầu:
 
-1. Truy cập https://makersuite.google.com/app/apikey
+1. Truy cập [AIstudio] (https://makersuite.google.com/app/apikey)
 2. Đăng nhập bằng tài khoản Google
 3. Nhấn **"Create API Key"** để tạo key miễn phí
 4. Copy API Key

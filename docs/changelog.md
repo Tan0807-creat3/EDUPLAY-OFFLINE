@@ -2,7 +2,7 @@
 
 All notable changes to EduPlay Offline will be documented in this file.
 
-## [0.1.0] - 2024-10-30
+## [0.0.1] - 2025-10-31
 
 ### Added
 
@@ -100,7 +100,4 @@ This project follows [Semantic Versioning](https://semver.org/):
 
 ## Links
 
-- [GitHub Repository](#)
-- [Documentation](#)
-- [Issue Tracker](#)
-- [Releases](#)
+- [GitHub Repository](https://github.com/Tan0807-creat3/EDUPLAY-OFFLINE.git)

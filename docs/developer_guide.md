@@ -331,5 +331,5 @@ MIT License - Free for educational use
 
 ## Contact
 
-- GitHub: [repository URL]
-- Email: developer@eduplay.example
+- GitHub: [https://github.com/Tan0807-creat3/EDUPLAY-OFFLINE.gitL]
+- Email: tanntfx37798@funix.edu.vn
